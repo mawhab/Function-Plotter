@@ -6,7 +6,7 @@ class Function_evaluator:
         self.verifier = Function_evaluator.Verifer()
 
     def set_function(self,f):
-        res = Function_evaluator.validate_input(f)
+        res = Function_evaluator.validate_fn(f)
         assert res.passed, res.full_msg
         self.verifier.fn = True
         self.fn = f
@@ -25,15 +25,6 @@ class Function_evaluator:
         except ValueError:
             raise AssertionError('Max value must be a number.')
 
-    def set_max_val(self, max_val):
-        try:
-            self.max_val = float(max_val)
-            self.verifier.max_val = True
-            if self.verifier.min_val:
-                assert self.min_val<self.max_val, 'Min value must be lower than max value.'
-        except ValueError:
-            raise AssertionError('Max value must be a number.')
-
     def evaluate(self):
         assert self.verifier.fn and self.verifier.max_val and self.verifier.min_val, 'One or more parameters has not been verified'
         self.fn = Function_evaluator.cleanup_fn(self.fn)
@@ -47,7 +38,7 @@ class Function_evaluator:
         f = f.replace('X', 'x')
         return f
     
-    def validate_input(f:str):
+    def validate_fn(f:str):
         prev=''
         err_start = 0
         OPERATORS = ['+', '-', '*', '/', '^', '']
