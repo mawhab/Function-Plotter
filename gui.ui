@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>fn_plotter_window</class>
+ <widget class="QDialog" name="fn_plotter_window">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>530</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QGroupBox" name="control_group">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>290</y>
+     <width>600</width>
+     <height>131</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Control</string>
+   </property>
+   <widget class="QLabel" name="fx_label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>29</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>F(x):</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="fx_input">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>40</y>
+      <width>200</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>200</width>
+      <height>0</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="min_input">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>40</y>
+      <width>93</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="max_input">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>80</y>
+      <width>93</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="plot_button">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>100</y>
+      <width>100</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Plot</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>40</y>
+      <width>31</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Min:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>80</y>
+      <width>41</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Max:</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="plot">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>620</width>
+     <height>280</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Plot</string>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>440</y>
+     <width>620</width>
+     <height>75</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Output</string>
+   </property>
+   <widget class="QTextEdit" name="status_output">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>35</y>
+      <width>600</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="mouseTracking">
+     <bool>false</bool>
+    </property>
+    <property name="acceptDrops">
+     <bool>false</bool>
+    </property>
+    <property name="undoRedoEnabled">
+     <bool>false</bool>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
