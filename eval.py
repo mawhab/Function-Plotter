@@ -80,3 +80,6 @@ class Function_evaluator:
                 self.line = f[:self.start] + Function_evaluator.Function_error.underline \
                 + f[self.start:self.end+1] + Function_evaluator.Function_error.end + f[self.end+1:]
                 self.full_msg = 'Error: ' + self.error_msg + ' ' + self.line
+
+        def __eq__(self, __value: object) -> bool:
+            return self.full_msg == __value.full_msg
