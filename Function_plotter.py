@@ -2,7 +2,7 @@ import sys
 from PySide2.QtWidgets import QApplication, QMainWindow, QHBoxLayout
 from PySide2 import QtCore
 from gui import Ui_fn_plotter_window
-from eval import Function_evaluator
+from eval import FunctionEvaluator
 from matplotlib.backends.backend_qtagg import FigureCanvas
 from matplotlib.figure import Figure
 
@@ -12,7 +12,7 @@ class MainWindow(QMainWindow):
         self.ui = Ui_fn_plotter_window()
         self.ui.setupUi(self)
         self.ui.plot_button.clicked.connect(self.plot)
-        self.fn_eval = Function_evaluator()
+        self.fn_eval = FunctionEvaluator()
 
         self.setWindowTitle('Function Plotter')
 
@@ -32,6 +32,7 @@ class MainWindow(QMainWindow):
             self.fn_eval.set_function(self.ui.fx_input.text())
             self.fn_eval.set_min_max_val(self.ui.min_input.text(), self.ui.max_input.text())
         except AssertionError as e:
+            print('error alo')
             err = e.args
         if err:
             self.ui.status_output.clear()

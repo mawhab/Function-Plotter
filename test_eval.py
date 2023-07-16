@@ -1,8 +1,20 @@
-import string
-import random
 import pytest
-import numpy as np
-from eval import Function_evaluator
+from pytestqt.qt_compat import qt_api
+from eval import FunctionEvaluator
+from Function_plotter import *
+
+gui_test_data = [
+        ('3x^2', '10', '20', r'Error: x needs to follow an operator 3x^2'),
+        ('2*x+x^2+24*x+13', '-10', '-96', 'Error: Min value must be lower than max value.'),
+        ('2^x+x^2+24*x+x', '-44', '84', 'Plotted 2^x+x^2+24*x+x'),
+        ('X*13/7+32', '-58', 'a3', 'Error: Max value must be a number.'),
+        ('13^2-16*x', '0a', '43', 'Error: Min value must be a number.'),
+        ('7*X^2', '-89', '11', 'Plotted 7*X^2'),
+        ('x9*2+17*x', '-87', '48', 'Error: A number needs to follow an operator or another number x9*2+17*x'),
+        ('90*X-+17*x', '-60', '79', 'Error: An operator cannot follow an operator 90*X-+17*x'),
+        ('214*a^2-17*x+1', '-82', '58', 'Error: x is the only alphabetic character allowed 214*a^2-17*x+1'),
+        ('17+21*X^2+17*x', '-50', '44', 'Plotted 17+21*X^2+17*x')
+    ]
 
 fn_test_data = [
         ('2^x+x^2+24*x+13', True),
@@ -57,7 +69,7 @@ validate_test_data = [
 
 @pytest.mark.parametrize("fn, correctness", fn_test_data)
 def test_set_f(fn, correctness):
-    f = Function_evaluator()
+    f = FunctionEvaluator()
     if correctness:
         f.set_function(fn)
         assert f.fn == fn and f.verifier.fn
@@ -67,7 +79,7 @@ def test_set_f(fn, correctness):
 
 @pytest.mark.parametrize("min, max", min_max_test_data)
 def test_set_min_max(min,max):
-    f = Function_evaluator()
+    f = FunctionEvaluator()
     if min<max:
         f.set_min_max_val(min, max)
         assert f.verifier.min_val and f.verifier.max_val \
@@ -78,8 +90,18 @@ def test_set_min_max(min,max):
 
 @pytest.mark.parametrize("fn,fn_correct, min, max", evaluate_test_data)
 def test_evaluate(fn, fn_correct, min, max):
-    f = Function_evaluator()
+    f = FunctionEvaluator()
     f.set_function(fn)
     f.set_min_max_val(min,max)
     x,y = f.evaluate()
     assert (y==eval(fn_correct)).all()
+
+@pytest.mark.parametrize("fn, min, max, msg", gui_test_data)
+def test_gui(qtbot, fn, min, max, msg):
+    win = MainWindow()
+    qtbot.addWidget(win)
+    win.ui.fx_input.insert(fn)
+    win.ui.min_input.insert(min)
+    win.ui.max_input.insert(max)
+    qtbot.mouseClick(win.ui.plot_button, qt_api.QtCore.Qt.MouseButton.LeftButton)
+    assert win.ui.status_output.toPlainText()==msg
