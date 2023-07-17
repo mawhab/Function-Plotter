@@ -3,6 +3,8 @@ from pytestqt.qt_compat import qt_api
 from eval import FunctionEvaluator
 from Function_plotter import *
 
+# test data for gui evaluation
+# function, min, max, and expected status message
 gui_test_data = [
         ('3x^2', '10', '20', r'Error: x needs to follow an operator 3x^2'),
         ('2*x+x^2+24*x+13', '-10', '-96', 'Error: Min value must be lower than max value.'),
@@ -16,6 +18,8 @@ gui_test_data = [
         ('17+21*X^2+17*x', '-50', '44', 'Plotted 17+21*X^2+17*x')
     ]
 
+# test data for function evaluation
+# function and wether or not it's valid
 fn_test_data = [
         ('2^x+x^2+24*x+13', True),
         ('2x+x^2+24*x+13', False),
@@ -29,6 +33,7 @@ fn_test_data = [
         ('17+21x^2+17*x', False)
     ]
 
+# min max data
 min_max_test_data = [
         (10,20),
         (24,93),
@@ -41,6 +46,8 @@ min_max_test_data = [
         (-64,-69),
         (-51,-11)
     ]
+
+# evaluate function test data
 evaluate_test_data = [
         ('x^2','x**2', 10,20),
         ('2*x+x^2+24*x+13','2*x+x**2+24*x+13', -10,96),
@@ -54,19 +61,8 @@ evaluate_test_data = [
         ('17+21*X^2+17*x','17+21*x**2+17*x', -50,44)
     ]
 
-validate_test_data = [
-        (10,20, True),
-        (24,93, True),
-        (97,-3, True),
-        (-68,13, True),
-        (10,20, True),
-        (10,20, True),
-        (10,20, True),
-        (10,20, True),
-        (10,20, True),
-        (10,20, True)
-    ]
-
+# test function setting
+# invalid functions should raise an assertion error
 @pytest.mark.parametrize("fn, correctness", fn_test_data)
 def test_set_f(fn, correctness):
     f = FunctionEvaluator()
@@ -77,6 +73,8 @@ def test_set_f(fn, correctness):
         with pytest.raises(AssertionError):
             f.set_function(fn)
 
+# test min max setting
+# invalid min max combinations should raise an assertion error
 @pytest.mark.parametrize("min, max", min_max_test_data)
 def test_set_min_max(min,max):
     f = FunctionEvaluator()
@@ -88,6 +86,8 @@ def test_set_min_max(min,max):
         with pytest.raises(AssertionError):
             f.set_min_max_val(min, max)
 
+# test evaluation
+# output should be similar to output caluclated by python
 @pytest.mark.parametrize("fn,fn_correct, min, max", evaluate_test_data)
 def test_evaluate(fn, fn_correct, min, max):
     f = FunctionEvaluator()
@@ -96,6 +96,8 @@ def test_evaluate(fn, fn_correct, min, max):
     x,y = f.evaluate()
     assert (y==eval(fn_correct)).all()
 
+# gui test
+# status bar should print the correct message
 @pytest.mark.parametrize("fn, min, max, msg", gui_test_data)
 def test_gui(qtbot, fn, min, max, msg):
     win = MainWindow()

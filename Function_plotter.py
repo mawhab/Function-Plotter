@@ -7,8 +7,14 @@ from matplotlib.backends.backend_qtagg import FigureCanvas
 from matplotlib.figure import Figure
 
 class MainWindow(QMainWindow):
+    DEFAULT_VAL = 10
     def __init__(self):
         super(MainWindow, self).__init__()
+        self.setup_window()
+        self.setup_outputs()
+        self.setup_inputs()
+
+    def setup_window(self):
         self.ui = Ui_fn_plotter_window()
         self.ui.setupUi(self)
         self.ui.plot_button.clicked.connect(self.plot)
@@ -26,11 +32,35 @@ class MainWindow(QMainWindow):
         self.ax = canvas.figure.subplots()
         self._drawing =  None
 
+    def setup_inputs(self):
+        # set default values for min and max
+        self.ui.min_input.setPlaceholderText(str(-MainWindow.DEFAULT_VAL))
+        self.ui.max_input.setPlaceholderText(str(MainWindow.DEFAULT_VAL))
+
+    def setup_outputs(self):
+        # setup startup status bar
+        self.ui.status_output.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.ui.status_output.clear()
+        self.ui.status_output.insertHtml('Startup')
+        self.ui.status_output.setAlignment(QtCore.Qt.AlignHCenter)
+
     def plot(self):
+        '''
+        Function is called on plot button press. Take function, min, and max ranges.
+        Validate all inputs then evaluate using FunctionEvaluator object.
+        Plot the function outputs to the window using embedded figure.
+        Update status bar according to output and validation.
+        '''
+        tmp_min, tmp_max = self.ui.min_input.text(), self.ui.max_input.text()
+        if not tmp_min:
+            tmp_min = str(-MainWindow.DEFAULT_VAL)
+        
+        if not tmp_max:
+            tmp_max = str(MainWindow.DEFAULT_VAL)
         err = ''
         try:
             self.fn_eval.set_function(self.ui.fx_input.text())
-            self.fn_eval.set_min_max_val(self.ui.min_input.text(), self.ui.max_input.text())
+            self.fn_eval.set_min_max_val(tmp_min, tmp_max)
         except AssertionError as e:
             print('error alo')
             err = e.args
@@ -38,16 +68,16 @@ class MainWindow(QMainWindow):
             self.ui.status_output.clear()
             self.ui.status_output.insertHtml(err[0])
             self.ui.status_output.setAlignment(QtCore.Qt.AlignHCenter)
+            self.ui.status_output.setStyleSheet("background-color: rgb(255, 0, 0);")
             return
         x,y = self.fn_eval.evaluate()
         self.ax.clear()
         self._drawing, = self.ax.plot(x,y)
         self._drawing.figure.canvas.draw()
         self.ui.status_output.clear()
-        self.ui.status_output.insertPlainText('Plotted ' + self.ui.fx_input.text())
+        self.ui.status_output.insertHtml('Plotted ' + self.ui.fx_input.text())
         self.ui.status_output.setAlignment(QtCore.Qt.AlignHCenter)
-        # plt.show()
-        # print('Clicked ' + fn + ' ' + min_val + ' ' + max_val)
+        self.ui.status_output.setStyleSheet("background-color: rgb(0, 255, 0);")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
